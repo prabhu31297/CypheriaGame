@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cypheria Game</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <script src="{{ url_for('static', filename='data.js') }}" defer></script>
+</head>
+<body>
+  <div class="banner">
+    <img src="{{ url_for('static', filename='banner.png') }}" alt="CypheriaCTF - Over the wire inspired " style="height: 100px;">
+    <h1>Welcome to Cypheria Game</h1>
+  </div>
+  <div class="container">
+    <div class="sidebar">
+      <h2>Challenges</h2>
+      <ul id="challengeList"></ul>
+    </div>
+    <div class="main-content">
+      <div id="welcomePage">
+        <h2>Welcome</h2>
+        <p>Cypheria Game is a collection of 15 cybersecurity challenges across three domains: Cryptography, Binary Exploitation, and vortex games.</p>
+        <p>Choose a level from the left to begin your mission.</p>
+        <p>It is created by Prabhu Perumal</p>
+
+      </div>
+      <div id="challengePage" style="display:none;">
+        <h2 id="challengeTitle"></h2>
+        <p><strong>Category:</strong> <span id="challengeCategory"></span></p>
+        <p><strong>Goal:</strong> <span id="challengeGoal"></span></p>
+        <p><strong>Description:</strong></p>
+        <p id="challengeDescription"></p>
+        <p><strong>Useful Commands:</strong></p>
+        <ul id="challengeCommands"></ul>
+        <p><strong>Hint:</strong> <span id="challengeHint"></span></p>
+        <p><strong>Submit Flag:</strong></p>
+        <input type="text" id="flagInput" placeholder="cypheria{your_flag}">
+        <button onclick="submitFlag()">Submit</button>
+        <p id="submitResult"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const list = document.getElementById("challengeList");
+      for (let level = 1; level <= 15; level++) {
+        const data = levelData[level];
+        if (!data) continue;
+        const item = document.createElement("li");
+        item.textContent = "Level " + level + ": " + data.title;
+        item.setAttribute("data-level", level);
+        item.onclick = () => showChallenge(level);
+        list.appendChild(item);
+      }
+    });
+
+    function showChallenge(level) {
+      const data = levelData[level];
+      document.getElementById("welcomePage").style.display = "none";
+      document.getElementById("challengePage").style.display = "block";
+      document.getElementById("challengeTitle").textContent = "Level " + level + ": " + data.title;
+      document.getElementById("challengeCategory").textContent = data.category;
+      document.getElementById("challengeGoal").textContent = data.goal;
+      document.getElementById("challengeDescription").textContent = data.description;
+      document.getElementById("challengeHint").textContent = data.hint;
+
+      const cmdList = document.getElementById("challengeCommands");
+      cmdList.innerHTML = "";
+      data.commands.forEach(cmd => {
+        const li = document.createElement("li");
+        li.textContent = cmd;
+        cmdList.appendChild(li);
+      });
+
+      document.getElementById("flagInput").value = "";
+      document.getElementById("submitResult").textContent = "";
+    }
+
+    function submitFlag() {
+      const flag = document.getElementById("flagInput").value.trim();
+      const levelText = document.getElementById("challengeTitle").textContent;
+      const level = parseInt(levelText.match(/Level (\d+)/)[1]);
+
+      fetch("/api/check_flag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ level: level, flag: flag })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("submitResult").textContent = data.message;
+      })
+      .catch(error => {
+        document.getElementById("submitResult").textContent = "Server error: " + error;
+      });
+    }
+  </script>
+</body>
+</html>

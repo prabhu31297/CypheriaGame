@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "9000:9000"
+    container_name: cypheria_backend
+    restart: unless-stopped
+
+  xor_level01:
+    build: ./challenges/cryptochallenges/level01_xormadness
+    ports:
+      - "9011:80"
+    container_name: xor_challenge_01
+    restart: unless-stopped
+
+  rsa_level02:
+    build: ./challenges/cryptochallenges/level02_bad_rsa
+    ports:
+      - "9012:80"
+    container_name: rsa_challenge_02
+    restart: unless-stopped
+
+  padding_oracle_03:
+    build: ./challenges/cryptochallenges/level03_padding_oracle
+    ports:
+      - "9013:9013"
+    container_name: padding_oracle_03
+    restart: unless-stopped
+
+  hash_hell_04:
+    build:
+      context: ./challenges/cryptochallenges/level04_hashhell
+    image: hash_hell_04
+    container_name: hash_hell_04
+    ports:
+      - "9014:9014"
+    restart: unless-stopped
+
+  timing_hmac_05:
+    build: ./challenges/cryptochallenges/level05_timing_hmac
+    ports:
+      - "9015:9015"
+    container_name: timing_hmac_05
+    restart: unless-stopped
+
+  stack_overflow_06:
+    build:
+      context: ./challenges/Binary_exploitation/level06_stackoverflow
+    ports:
+      - "9016:8001"
+    container_name: stack_overflow_06
+    restart: unless-stopped
+
+  format_string_07:
+    build: ./challenges/Binary_exploitation/level07_formatstring
+    ports:
+      - "9017:9017"
+      - "8002:8002"  # Netcat (vuln binary)
+    container_name: format_string_07
+    restart: unless-stopped
+
+  rop_me_baby_08:
+    build: ./challenges/Binary_exploitation/level08_ROP_me_baby
+    ports:
+      - "9018:9018"    # HTTP
+      - "9081:9081"    # Netcat
+    container_name: rop_me_baby_08
+    restart: unless-stopped
+
+  ld_preload_hijack_09:
+    build: ./challenges/Binary_exploitation/level09_ldpreload_hijack
+    ports:
+      - "9019:9019"
+      - "9091:9091"
+    container_name: ld_preload_hijack_09
+    restart: unless-stopped
+
+  vortex10:
+    build:
+      context: ./challenges/vortex/level_10_random
+    ports:
+      - "9010:9010"
+    container_name: vortex10
+    restart: unless-stopped
+
+  vortex11:
+    build:
+      context: ./challenges/vortex/level_11_remote_integer_fun
+    container_name: vortex11
+    restart: unless-stopped
+
+  vortex12:
+    build:
+      context: ./challenges/vortex/level_12_signal_game
+    ports:
+      - "9021:9021"
+    container_name: vortex12
+    restart: unless-stopped
+
+  vortex13:
+    build:
+      context: ./challenges/vortex/level_13_socket_base64
+    ports:
+      - "9022:9022"
+    container_name: vortex13
+    restart: unless-stopped

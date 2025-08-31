@@ -1,0 +1,15 @@
+{
+  "1": "cypheria{xor_cracked}",
+  "2": "cypheria{rsa_pwned}",
+  "3": "cypheria{padding_oracles_are_dangerous}",
+  "4": "cypheria{hash_reverse_success}",
+  "5": "cypheria{timing_attack_done}",
+  "6": "cypheria{overflow_mastered}",
+  "7": "cypheria{format_fun_leaked}",
+  "8": "flag{rop_bypassed_nx_ownage}",
+  "9": "cypheria{ld_preload_function_hijack_win}",
+  "10": "cypheria{suid_rooted}",
+  "11": "cypheria{lsb_stego_found}",
+  "12": "cypheria{audio_echo_read}",
+  "13": "cypheria{mem_dump_decoded}"
+}

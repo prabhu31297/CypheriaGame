@@ -1,0 +1,2 @@
+echo "cypheria{lsb_stego_found}" > flag.txt
+chmod 444 flag.txt
